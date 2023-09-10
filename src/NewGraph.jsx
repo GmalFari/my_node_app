@@ -1,20 +1,18 @@
 
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect,useState, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import * as d3 from 'd3';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { sourceData } from '../lib/source-data';
+import { sourceData,propertyNames } from '../lib/source-data';
 import { RandomColor } from '../components/randomColor';
 
 const NewGraph = () => {
-  const chartRef = useRef();
-
+  const [selectedProperty,setSelectedProperty]=useState(propertyNames[Math.floor(Math.random()*100)])
+  const chartRef = useRef()
   useEffect(() => {
-    
-    
-    const width = 2000;
-    const height = 2000;
+    const width = 500;
+    const height = 500;
 
     const svg = d3.select(chartRef.current).append('svg').attr('width', width).attr('height', height);
     const simulation = d3
@@ -25,16 +23,20 @@ const NewGraph = () => {
 
       
     const link = svg.selectAll('line').data(sourceData.links).enter().append('line').attr('stroke', 'gray').attr('stroke-width', 1);
-
     const node = svg.selectAll('.node').data(sourceData.nodes).enter().append('g').attr('class', 'node')      .style('position','relative').style('display', 'flex').style('align-items', 'center').style('justify-content', 'center')
-    .style('position','relative').style('display', 'flex').style('align-items', 'center').style('justify-content', 'center');
-    
+    .style('display', 'flex').style('align-items', 'center').style('justify-content', 'center');
     node
-      .append('circle')
-      .attr('r', 12)
-      .attr('fill',`#252222bd` )
+  .append('circle')
+  .attr('r', 12)
+  .attr('fill', `#252222bd`);
 
-    node.each(function (d) {
+
+  // node text
+
+
+;
+
+      node.each(function (d) {
       const el = d3.select(this);
       if (d.class) {
         const foreignObject = el.append('foreignObject').attr('width', 18).attr('height', 18);
@@ -42,6 +44,42 @@ const NewGraph = () => {
         const foreignIcon = foreignDiv.append('xhtml:i').attr('class', `fas ${d.class}`)
         .style('color',`${RandomColor()}`).style('font-size',"");
         ReactDOM.createPortal(<FontAwesomeIcon icon={d.icon} />, foreignIcon.node());
+        
+
+
+          node
+          .append('foreignObject')
+          .attr('x', -50) // Adjust the x-position of the foreignObject relative to the node
+          .attr('y', 0) // Adjust the y-position of the foreignObject relative to the node
+          .attr('width', '100') // Adjust the width of the foreignObject container
+          .attr('height', 100) // Adjust the height of the foreignObject container
+          .append('xhtml:ul')
+          .append('xhtml:li')
+          .text(`${selectedProperty}`)
+          .style('background-color',"#333")
+          .style('text-align',"center")
+          .style('border-radius',"20px")
+
+
+          .style('color',"white")
+          .style('display',"none")
+
+          node.on('mouseenter',function(){
+            setSelectedProperty(propertyNames[Math.floor(Math.random()*90)])
+            d3.select(this)
+            .select('foreignObject')
+            .select('li')
+            .style('display','block');
+          })
+          .on('mouseleave',function(){
+            setSelectedProperty(propertyNames[Math.floor(Math.random()*100)])
+            d3.select(this)
+            .select('foreignObject')
+            .select('li')
+            .style('display','none')
+          })
+    
+
       }
     });
 
