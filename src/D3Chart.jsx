@@ -12,7 +12,6 @@ const D3Chart = () => {
       .append('svg')
       .attr('width', 500)
       .attr('height', 300);
-
     svg
       .selectAll('rect')
       .data(data)
@@ -32,3 +31,4 @@ const D3Chart = () => {
 };
 
 export default D3Chart;
+
