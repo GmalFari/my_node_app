@@ -109,8 +109,8 @@ export const propertyNames = [
   'break room',
   'reception area'
 ];
-const numberOfNodes = 50; // Change this to the desired number of nodes
-const numberOfLinks = 60; // Change this to the desired number of links
+const numberOfNodes = 30; // Change this to the desired number of nodes
+const numberOfLinks = 40; // Change this to the desired number of links
 
 // Generate nodes
 const nodes = [];

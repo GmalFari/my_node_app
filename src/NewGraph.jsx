@@ -65,7 +65,7 @@ const NewGraph = () => {
           .style('display',"none")
 
           node.on('mouseenter',function(){
-            setSelectedProperty(propertyNames[Math.floor(Math.random()*90)])
+            setSelectedProperty(propertyNames[Math.floor(Math.random()*0)])
             d3.select(this)
             .select('foreignObject')
             .select('li')
